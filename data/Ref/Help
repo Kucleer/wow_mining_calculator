@@ -1,0 +1,15 @@
+生成价格趋势图：
+
+text
+python analysis_tool.py price 幽冥铁矿石 铜矿石 --days 30 --output iron_copper_prices.png
+
+
+生成可购买数量趋势图：
+
+text
+python analysis_tool.py availability 孔雀石 虎眼石 --days 14 --output gem_availability.png
+
+生成价格相关性图：
+
+text
+python analysis_tool.py correlation 幽冥铁矿石 日曜石 --days 90 --output iron_sunstone_corr.png
