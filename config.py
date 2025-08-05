@@ -3,12 +3,13 @@ import os
 # 基础目录
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 
-# 其他配置保持不变
+# 数据目录
 DATA_DIR = os.path.join(BASE_DIR, "data")
 HISTORY_DIR = os.path.join(DATA_DIR, "market_history")
 REPORTS_DIR = os.path.join(DATA_DIR, "reports")
 
 # 确保目录存在
+os.makedirs(DATA_DIR, exist_ok=True)
 os.makedirs(HISTORY_DIR, exist_ok=True)
 os.makedirs(REPORTS_DIR, exist_ok=True)
 os.makedirs(os.path.join(HISTORY_DIR, "items"), exist_ok=True)

@@ -1,9 +1,15 @@
-graph TD
-    A[开始] --> B[计算炸矿收益]
-    B --> C[评估纯炸矿策略]
-    C --> D[评估炸矿+制作策略]
-    D --> E[评估采购+制作策略]
-    E --> F[评估混合策略]
-    F --> G[比较所有策略收益]
-    G --> H[选择最优策略]
-    H --> I[输出结果]
+wow_mining_calculator/
+├── main.py                  # 主程序入口
+├── calculator.py            # 核心计算逻辑
+├── strategy.py              # 策略管理
+├── config.py                # 配置参数
+├── market_parser.py         # 市场数据解析器
+├── report_generator.py      # 炸矿报告生成器
+├── history_recorder.py      # 历史数据记录器
+├── chart_generator.py       # 图表生成器
+├── strategy_analyzer.py     # 策略分析器
+├── analysis_tool.py         # 分析工具命令行接口
+├── data/
+│   ├── market_history/      # 历史市场数据存档
+│   └── reports/             # 生成的报告文件
+└── README.md                # 项目文档

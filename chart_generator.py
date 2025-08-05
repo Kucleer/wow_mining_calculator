@@ -1,58 +1,68 @@
 import pandas as pd
-import numpy as np
-import matplotlib as mpl
 import matplotlib.pyplot as plt
-import matplotlib.font_manager as fm
 import os
+import numpy as np
 from datetime import datetime
 from config import HISTORY_DIR, BASE_DIR
 import warnings
+import matplotlib.font_manager as fm  # 添加字体管理器
+
+# 设置全局字体配置（先尝试简单设置）
+plt.rcParams['font.family'] = 'sans-serif'
+plt.rcParams['font.sans-serif'] = ['SimHei', 'Microsoft YaHei', 'WenQuanYi Micro Hei']
+plt.rcParams['axes.unicode_minus'] = False  # 解决负号显示问题
 
 # 忽略警告
 warnings.filterwarnings("ignore", category=UserWarning)
 
 
-# 设置中文字体支持
+# 优化后的中文字体设置函数
 def set_chinese_font():
     try:
-        # 尝试使用系统字体
-        plt.rcParams['font.sans-serif'] = ['SimHei', 'Microsoft YaHei', 'SimSun', 'Arial Unicode MS']
-        plt.rcParams['axes.unicode_minus'] = False  # 正确显示负号
+        # 获取系统中所有可用字体
+        all_fonts = [f.name for f in fm.fontManager.ttflist]
+        chinese_fonts = ['SimHei', 'Microsoft YaHei', 'SimSun', 'Arial Unicode MS', 'WenQuanYi Micro Hei']
 
-        # 检查字体是否可用
-        available_fonts = [f.name for f in fm.fontManager.ttflist]
-        chinese_fonts = ['SimHei', 'Microsoft YaHei', 'SimSun', 'Arial Unicode MS']
+        # 查找系统中实际存在的中文字体
+        available_chinese_fonts = [font for font in chinese_fonts if any(f.lower() == font.lower() for f in all_fonts)]
 
-        # 如果没有找到中文字体，尝试使用内置字体
-        if not any(font in available_fonts for font in chinese_fonts):
-            # 使用内置的WenQuanYi Micro Hei字体
-            plt.rcParams['font.sans-serif'] = ['WenQuanYi Micro Hei']
+        if available_chinese_fonts:
+            # 使用第一个可用的中文字体
+            plt.rcParams['font.sans-serif'] = [available_chinese_fonts[0]]
+            print(f"已设置中文字体: {available_chinese_fonts[0]}")
+            return True
+        else:
+            # 尝试使用内置字体文件
+            try:
+                # 查找可能的字体文件路径
+                font_path = None
+                possible_paths = [
+                    os.path.join(BASE_DIR, "fonts", "SimHei.ttf"),
+                    "/usr/share/fonts/truetype/wqy/wqy-microhei.ttc",
+                    "C:/Windows/Fonts/simhei.ttf"
+                ]
 
-            # 如果仍然不可用，尝试下载并注册字体
-            if 'WenQuanYi Micro Hei' not in available_fonts:
-                try:
-                    import os
-                    from urllib.request import urlretrieve
+                for path in possible_paths:
+                    if os.path.exists(path):
+                        font_path = path
+                        break
 
-                    # 下载字体文件
-                    font_url = "https://github.com/googlefonts/noto-cjk/raw/main/Sans/OTF/SimplifiedChinese/NotoSansCJKsc-Regular.otf"
-                    font_path = os.path.join(BASE_DIR, "NotoSansCJKsc-Regular.otf")
-
-                    if not os.path.exists(font_path):
-                        print("下载中文字体文件...")
-                        urlretrieve(font_url, font_path)
-
-                    # 注册字体
+                if font_path:
+                    # 添加并注册字体
                     font_prop = fm.FontProperties(fname=font_path)
-                    fm.fontManager.addfont(font_path)
+                    plt.rcParams['font.family'] = 'sans-serif'
                     plt.rcParams['font.sans-serif'] = [font_prop.get_name()]
                     print(f"已注册字体: {font_prop.get_name()}")
-                except Exception as e:
-                    print(f"字体下载失败: {e}")
-                    # 回退到默认字体
-                    plt.rcParams['font.sans-serif'] = ['DejaVu Sans']
+                    return True
+
+            except Exception as e:
+                print(f"字体注册失败: {e}")
+
     except Exception as e:
         print(f"设置中文字体失败: {e}")
+
+    print("警告: 无法设置中文字体，图表可能无法正确显示中文")
+    return False
 
 
 # 初始化字体设置
@@ -188,17 +198,3 @@ def generate_correlation_chart(item_name1, item_name2, days=30, output_file="pri
         plt.close()
     except Exception as e:
         print(f"生成相关性图时出错: {e}")
-
-def test_font_support():
-    """测试中文字体支持"""
-    plt.figure(figsize=(10, 3))
-    plt.text(0.5, 0.5, "中文测试: 幽冥铁矿石 铜矿石 孔雀石",
-             fontsize=20, ha='center')
-    plt.axis('off')
-    plt.savefig("chinese_font_test.png")
-    plt.close()
-    print("字体测试图已保存至: chinese_font_test.png")
-
-# 在文件末尾调用测试
-if __name__ == "__main__":
-    test_font_support()

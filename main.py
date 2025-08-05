@@ -3,7 +3,7 @@ from datetime import datetime
 from market_parser import parse_market_data
 from calculator import ProfitCalculator
 from report_generator import generate_report_entry, save_report_entry
-from history_recorder import record_market_data  # 新增
+from history_recorder import record_market_data, record_all_strategies
 import config
 
 
@@ -13,7 +13,8 @@ def main():
     print("功能:")
     print("1. 炸矿收益计算")
     print("2. 市场数据历史记录")
-    print("3. 图表分析 (单独运行 chart_generator.py)")
+    print("3. 策略收益跟踪")
+    print("4. 图表分析 (单独运行 analysis_tool.py)")
     print("=" * 70)
 
     while True:
@@ -50,6 +51,9 @@ def main():
             # 创建计算器
             calculator = ProfitCalculator(market_data)
 
+            # 获取当前时间戳（用于记录策略）
+            current_timestamp = datetime.now()
+
             # 对于每种矿石
             for ore_name in config.MINING_RECIPES:
                 print(f"\n计算矿石: {ore_name}...")
@@ -59,11 +63,15 @@ def main():
                     results = calculator.evaluate_strategies(ore_name)
 
                     # 生成报告条目
-                    timestamp = datetime.now().strftime("%Y-%m-%d %H:%M")
-                    entry = generate_report_entry(timestamp, ore_name, market_data, results)
+                    timestamp_str = current_timestamp.strftime("%Y-%m-%d %H:%M")
+                    entry = generate_report_entry(timestamp_str, ore_name, market_data, results)
 
                     # 保存报告
                     save_report_entry(entry)
+
+                    # 记录所有策略收益
+                    if "all_strategies" in results:
+                        record_all_strategies(current_timestamp, ore_name, results["all_strategies"])
 
                     # 显示结果
                     print("\n" + "=" * 70)

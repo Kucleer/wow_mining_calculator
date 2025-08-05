@@ -1,5 +1,5 @@
-from strategy import StrategyEvaluator  # 修改为绝对导入
-from config import MINING_TIME_PER_ORE  # 确保从 config 导入所需变量
+from strategy import StrategyEvaluator
+from config import MINING_TIME_PER_ORE
 
 
 class ProfitCalculator:
@@ -12,7 +12,7 @@ class ProfitCalculator:
 
     def simulate_mining(self, ore_name, cycles):
         """模拟炸矿过程"""
-        from config import MINING_RECIPES  # 在函数内部导入
+        from config import MINING_RECIPES
 
         if ore_name not in MINING_RECIPES:
             return {}

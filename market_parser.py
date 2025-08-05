@@ -16,10 +16,14 @@ def parse_market_data(text_data):
 
     # 尝试跳过标题行
     try:
-        headers = next(reader)  # 读取并丢弃标题行
-        # 验证标题行是否包含"价格"列
-        if headers and "价格" in headers[0]:
+        headers = next(reader)  # 读取标题行
+        # 验证标题行
+        if len(headers) > 0 and "价格" in headers[0]:
             print(f"已跳过标题行: {headers}")
+        else:
+            # 如果没有标题行，重置reader
+            f.seek(0)
+            reader = csv.reader(f)
     except StopIteration:
         return market_data
 

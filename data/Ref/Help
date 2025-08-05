@@ -13,3 +13,17 @@ python analysis_tool.py availability 孔雀石 虎眼石 --days 14 --output gem_
 
 text
 python analysis_tool.py correlation 幽冥铁矿石 日曜石 --days 90 --output iron_sunstone_corr.png
+
+
+1. 生成策略收益趋势图
+bash
+python analysis_tool.py strategy trend "纯炸矿" --ore 幽冥铁矿石 --days 30 --output malachite_strategy_trend.png
+2. 比较多个策略
+bash
+python analysis_tool.py strategy compare "纯炸矿" "炸矿+制作孔雀石坠饰" "混合+制作孔雀石坠饰" --ore 铜矿石 --days 14 --output copper_strategies_comparison.png
+3. 生成策略报告
+bash
+python analysis_tool.py strategy report --ore 幽冥铁矿石 --days 90 --output iron_strategy_report.csv
+4. 完整策略分析
+bash
+python analysis_tool.py strategy analyze "采购+制作虎眼指环" --ore 铜矿石 --days 180
