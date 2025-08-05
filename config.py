@@ -1,7 +1,9 @@
 import os
 
-# 基础配置
+# 基础目录
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
+
+# 其他配置保持不变
 DATA_DIR = os.path.join(BASE_DIR, "data")
 HISTORY_DIR = os.path.join(DATA_DIR, "market_history")
 REPORTS_DIR = os.path.join(DATA_DIR, "reports")

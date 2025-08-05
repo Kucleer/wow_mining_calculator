@@ -1,7 +1,7 @@
 生成价格趋势图：
 
 text
-python analysis_tool.py price 幽冥铁矿石 铜矿石 --days 30 --output iron_copper_prices.png
+python analysis_tool.py price 幽冥铁矿石 日曜石 朱砂玛瑙 河心石 源红石 皇紫晶 荒玉 --days 30 --output iron_copper_prices.png
 
 
 生成可购买数量趋势图：
